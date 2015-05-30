@@ -28,7 +28,9 @@ ROSInterface::ROSInterface(ros::NodeHandle& nodeHandle, ros::NodeHandle& private
     m_trackCountPublisher = m_privateNodeHandle.advertise<std_msgs::UInt16>("track_count", 1);
 
     // Create ROS subscribers
-    const std::string detectedPersonsTopic = "/spencer/perception/detected_persons";
+    std::string detectedPersonsTopic = "/spencer/perception/detected_persons";
+    m_privateNodeHandle.param("input_detections", detectedPersonsTopic, detectedPersonsTopic);
+
     const std::string additionalLowConfidenceDetectionsTopic = srl_nnt::Params::get<std::string>("additional_low_confidence_detections", "");
 
     if(additionalLowConfidenceDetectionsTopic.empty()) {

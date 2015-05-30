@@ -1,3 +1,11 @@
+This is a fork of the original Spencer People Tracking repository by the SRL lab.
+
+The list of changes that have been made to the original repository are listed below:
+  - The input to nnt_node.cpp has been parameterized further. The private parameter "input_detections" was added to ros_interface.cpp (in srl_nearest_neighbor_tracker) to change the detectedPersonsTopic.
+
+
+==================================================================
+
 ### SPENCER Multi-Modal People Detection & Tracking Framework
 ###### Multi-modal ROS-based people and group detection & tracking framework for mobile robots developed within the context of the EU FP7 project [SPENCER](http://www.spencer.eu).
 
