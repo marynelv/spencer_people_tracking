@@ -3,6 +3,7 @@ This is a fork of the original Spencer People Tracking repository by the SRL.
 Below are the list of changes that were made to the original repository in this fork:
 
   - The input to nnt_node.cpp has been parameterized further. The private parameter "input_detections" was added to ros_interface.cpp (in srl_nearest_neighbor_tracker) to change the detectedPersonsTopic.
+  - Converted most of the nearest neighbor node code into a library ("spencer_nnt"), except for nnt_node.cpp. As a result, the tracking code can be used by other programs outside of the ros package.
 
 
 ==================================================================

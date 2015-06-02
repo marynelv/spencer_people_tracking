@@ -3,7 +3,11 @@ project(srl_nearest_neighbor_tracker)
 
 find_package(catkin REQUIRED COMPONENTS roscpp tf eigen_conversions tf_conversions spencer_diagnostics spencer_tracking_msgs)
 
-catkin_package()
+catkin_package(
+  INCLUDE_DIRS include
+  LIBRARIES spencer_nnt
+  CATKIN_DEPENDS roscpp tf eigen_conversions tf_conversions spencer_diagnostics spencer_tracking_msgs
+)
 
 if(NOT CMAKE_BUILD_TYPE MATCHES Debug)
   # Disable debug and info-level logging statements in release mode
@@ -27,10 +31,16 @@ set(TRACKER_SOURCES
     ${SOURCE_DIR}/occlusion_handling/basic_occlusion_manager.cpp
 )
 
+add_library(spencer_nnt
+  ${TRACKER_SOURCES}
+)
+target_link_libraries(spencer_nnt
+  ${catkin_LIBRARIES}
+)
 
-add_executable(nnt_node ${SOURCE_DIR}/ros/nodes/nnt_node.cpp ${TRACKER_SOURCES})
+add_executable(nnt_node ${SOURCE_DIR}/ros/nodes/nnt_node.cpp)
 add_dependencies(nnt_node ${catkin_EXPORTED_TARGETS})
-target_link_libraries(nnt_node ${catkin_LIBRARIES})
+target_link_libraries(nnt_node ${catkin_LIBRARIES} spencer_nnt)
 
 add_executable(logger_node ${SOURCE_DIR}/ros/nodes/logger_node.cpp)
 add_dependencies(logger_node ${catkin_EXPORTED_TARGETS})
