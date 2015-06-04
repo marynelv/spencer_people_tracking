@@ -26,6 +26,8 @@ generate_messages(
 )
 
 catkin_package(
+  INCLUDE_DIRS include
+  LIBRARIES srl_ahc_segmentation
   CATKIN_DEPENDS roscpp std_msgs sensor_msgs message_runtime 
 )
 
@@ -42,13 +44,21 @@ add_executable(jump_distance_segmentation
 add_dependencies(jump_distance_segmentation ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}_generate_messages_cpp)
 target_link_libraries(jump_distance_segmentation ${catkin_LIBRARIES})
 
-
-add_executable(ahc_segmentation
-  ${SOURCE_DIR}/ros/ros_interface.cpp
-  ${SOURCE_DIR}/ros/nodes/ahc_segmentation.cpp
+add_library(srl_ahc_segmentation
   ${SOURCE_DIR}/ahc.cpp
   ${SOURCE_DIR}/efficient_ahc/efficient_ahc.cpp
   ${SOURCE_DIR}/efficient_ahc/fib.c
 )
+target_link_libraries(srl_ahc_segmentation
+  ${catkin_LIBRARIES}
+)
+
+add_executable(ahc_segmentation
+  ${SOURCE_DIR}/ros/ros_interface.cpp
+  ${SOURCE_DIR}/ros/nodes/ahc_segmentation.cpp
+  # ${SOURCE_DIR}/ahc.cpp
+  # ${SOURCE_DIR}/efficient_ahc/efficient_ahc.cpp
+  # ${SOURCE_DIR}/efficient_ahc/fib.cpp
+)
 add_dependencies(ahc_segmentation ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}_generate_messages_cpp)
-target_link_libraries(ahc_segmentation ${catkin_LIBRARIES})
+target_link_libraries(ahc_segmentation ${catkin_LIBRARIES} srl_ahc_segmentation)
