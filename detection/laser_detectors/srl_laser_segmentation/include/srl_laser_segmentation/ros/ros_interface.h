@@ -16,7 +16,7 @@ namespace srl_laser_segmentation {
 class ROSInterface {
 public:
     /// Constructor
-    ROSInterface(ros::NodeHandle& nodeHandle, ros::NodeHandle& privateNodeHandle);
+  ROSInterface(ros::NodeHandle& nodeHandle, ros::NodeHandle& privateNodeHandle, bool verbose = false);
 
     /// Connect the segmentation algorithm to ROS, this will subscribe to a sensor_msgs/LaserScan topic and output a srl_laser_segmentation/LaserSegmentation topic.
     /// Remember to call ros::spin() after invoking this method.
@@ -26,6 +26,7 @@ private:
     void newLaserscanAvailable(const sensor_msgs::LaserScan::ConstPtr& laserscan);
 
     SegmentationAlgorithm* m_segmentationAlgorithm;
+    bool verbose_;
     
     ros::NodeHandle m_nodeHandle, m_privateNodeHandle;
     ros::Publisher m_laserscanSegmentationPublisher;

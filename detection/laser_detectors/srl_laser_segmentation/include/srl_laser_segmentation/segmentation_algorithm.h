@@ -26,6 +26,8 @@ protected:
     bool isValidMeasurement(const Point2D* point) {
         return !isnan(point->sum());
     }
+
+    bool verbose_;        //!< print information?
 };
 
 

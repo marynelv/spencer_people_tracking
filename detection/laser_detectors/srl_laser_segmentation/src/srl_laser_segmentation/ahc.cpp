@@ -4,8 +4,11 @@
 
 namespace srl_laser_segmentation {
 
-AgglomerativeHierarchicalClustering::AgglomerativeHierarchicalClustering(EfficientAHC::Linkage linkage, double distanceThreshold) : EfficientAHC(linkage, distanceThreshold)
+  AgglomerativeHierarchicalClustering::AgglomerativeHierarchicalClustering(EfficientAHC::Linkage linkage, double distanceThreshold, bool verbose) : EfficientAHC(linkage, distanceThreshold)
 {
+  verbose_ = verbose;
+
+  if (verbose_) 
     ROS_INFO("Initializing agglomerative hierarchical clustering segmentation with %s linkage!", LinkageString[linkage].c_str());
 }
 

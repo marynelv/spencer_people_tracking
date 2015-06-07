@@ -3,8 +3,8 @@
 
 namespace srl_laser_segmentation {
 
-ROSInterface::ROSInterface(ros::NodeHandle& nodeHandle, ros::NodeHandle& privateNodeHandle)
-    : m_nodeHandle(nodeHandle), m_privateNodeHandle(privateNodeHandle)
+  ROSInterface::ROSInterface(ros::NodeHandle& nodeHandle, ros::NodeHandle& privateNodeHandle, bool verbose)
+    : m_nodeHandle(nodeHandle), m_privateNodeHandle(privateNodeHandle), verbose_(verbose)
 {
 }
 
@@ -51,15 +51,18 @@ void ROSInterface::newLaserscanAvailable(const sensor_msgs::LaserScan::ConstPtr&
     int minPointsPerSegment = 3, maxPointsPerSegment = 50;
     m_privateNodeHandle.getParamCached("min_points_per_segment", minPointsPerSegment);
     m_privateNodeHandle.getParamCached("max_points_per_segment", maxPointsPerSegment);
-    ROS_INFO_ONCE("Filtering out all resulting segments with less than %d or more than %d points!", minPointsPerSegment, maxPointsPerSegment);
+    if (verbose_)
+      ROS_INFO_ONCE("Filtering out all resulting segments with less than %d or more than %d points!", minPointsPerSegment, maxPointsPerSegment);
 
     double minAvgDistanceFromSensor = 0;
-    m_privateNodeHandle.getParamCached("min_avg_distance_from_sensor", minAvgDistanceFromSensor);   
-    ROS_INFO_ONCE("Minimum allowed average segment distance from sensor is %f meters!", minAvgDistanceFromSensor);
+    m_privateNodeHandle.getParamCached("min_avg_distance_from_sensor", minAvgDistanceFromSensor);  
+    if (verbose_)
+      ROS_INFO_ONCE("Minimum allowed average segment distance from sensor is %f meters!", minAvgDistanceFromSensor);
 
     double maxAvgDistanceFromSensor = 10;
-    m_privateNodeHandle.getParamCached("max_avg_distance_from_sensor", maxAvgDistanceFromSensor);   
-    ROS_INFO_ONCE("Maximum allowed average segment distance from sensor is %f meters!", maxAvgDistanceFromSensor);
+    m_privateNodeHandle.getParamCached("max_avg_distance_from_sensor", maxAvgDistanceFromSensor);  
+    if (verbose_)
+      ROS_INFO_ONCE("Maximum allowed average segment distance from sensor is %f meters!", maxAvgDistanceFromSensor);
 
     // Filter segments
     srl_laser_segmentation::LaserscanSegmentation laserscanSegmentation;

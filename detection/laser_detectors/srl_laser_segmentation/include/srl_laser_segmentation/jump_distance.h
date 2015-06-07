@@ -11,7 +11,7 @@ class JumpDistanceSegmentation: public SegmentationAlgorithm {
 public:
     /// Constructor.
     /// @param jumpDistance The jump distance above which a new segment is created.
-    JumpDistanceSegmentation(double jumpDistance);
+    JumpDistanceSegmentation(double jumpDistance, bool verbose = false);
 
     /// Segment the given list of points. Consecutive points are assumed to be adjacent, i.e. the ordering of points is relevant.
     virtual void performSegmentation(const std::vector<Point2D>& points, std::vector<srl_laser_segmentation::LaserscanSegment>& resultingSegments);

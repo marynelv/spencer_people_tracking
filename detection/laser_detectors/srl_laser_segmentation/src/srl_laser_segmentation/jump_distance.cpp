@@ -1,10 +1,14 @@
 #include <srl_laser_segmentation/jump_distance.h>
-
+#include <ros/console.h>
 
 namespace srl_laser_segmentation {
 
-JumpDistanceSegmentation::JumpDistanceSegmentation(double jumpDistance) : m_jumpDistance(jumpDistance)
+  JumpDistanceSegmentation::JumpDistanceSegmentation(double jumpDistance, bool verbose) : m_jumpDistance(jumpDistance)
 {
+  verbose_ = verbose;
+
+  if (verbose_)
+    ROS_INFO("Initializing jump distance clustering with %f jump distance", jumpDistance);
 }
 
 void JumpDistanceSegmentation::performSegmentation(const std::vector<Point2D>& points, std::vector<srl_laser_segmentation::LaserscanSegment>& resultingSegments)

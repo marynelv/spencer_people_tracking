@@ -12,7 +12,7 @@ class AgglomerativeHierarchicalClustering: public SegmentationAlgorithm, private
 {
 public:
     /// Constructor
-    AgglomerativeHierarchicalClustering(EfficientAHC::Linkage linkage, double distanceThreshold);
+  AgglomerativeHierarchicalClustering(EfficientAHC::Linkage linkage, double distanceThreshold, bool verbose = false);
 
     /// Destructor
     virtual ~AgglomerativeHierarchicalClustering();
