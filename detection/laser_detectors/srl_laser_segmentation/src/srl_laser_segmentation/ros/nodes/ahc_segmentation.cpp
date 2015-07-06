@@ -9,10 +9,20 @@ int main(int argc, char **argv)
     ros::NodeHandle privateHandle("~");
 
     // Read parameters
-    double distanceThreshold; privateHandle.param<double>("distance_threshold", distanceThreshold, 0.4); // in meters
+    std::string laser_topic = "laser";
+    privateHandle.param<std::string>("laser_topic", laser_topic, laser_topic);
 
-    std::string linkageName; privateHandle.param<std::string>("linkage", linkageName, "single");
-    bool verbose = false; privateHandle.param<bool>("verbose", verbose, verbose);
+    std::string segmentation_topic = "laser_segmentation";
+    privateHandle.param<std::string>("segmentation_topic", segmentation_topic, segmentation_topic);
+
+    double distanceThreshold; 
+    privateHandle.param<double>("distance_threshold", distanceThreshold, 0.4); // in meters
+    
+    std::string linkageName; 
+    privateHandle.param<std::string>("linkage", linkageName, "single");
+    
+    bool verbose = false; 
+    privateHandle.param<bool>("verbose", verbose, verbose);
 
     // Set up the ROS interface, which also establishes the connection to the parameter server
     srl_laser_segmentation::ROSInterface rosInterface(nodeHandle, privateHandle, verbose);
@@ -32,6 +42,6 @@ int main(int argc, char **argv)
     srl_laser_segmentation::AgglomerativeHierarchicalClustering segmentation(linkage, distanceThreshold,verbose);    
 
     // Subscribe to laser scans and publish segmentations
-    rosInterface.connect(&segmentation);
+    rosInterface.connect(&segmentation, laser_topic, segmentation_topic);
     ros::spin();
 }
