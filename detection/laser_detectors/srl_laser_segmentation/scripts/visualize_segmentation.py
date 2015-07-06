@@ -13,21 +13,22 @@ colored sensor_msgs/PointCloud2 (where the colors indicate different segments), 
 """
 class LaserscanSegmentationVisualizer(object):
     def __init__(self):
-        laserscanTopic = rospy.resolve_name("laser")
-        segmentationTopic = rospy.resolve_name("laser_segmentation")
-        cloudTopic = segmentationTopic + "_cloud"
-        markersTopic = segmentationTopic + "_markers"
 
         ### Configurable parameters ##########
         self.unlabelledColor = rospy.get_param("~unlabelled_color", [0.7, 0.7, 0.7])
         self.fontScale = rospy.get_param("~font_scale", 1.0)
         self.minDistanceToSensor = rospy.get_param("~min_distance_to_sensor", 0.0)  # to filter out wrong echoes close to the sensor
+        laserscanTopic = rospy.get_param("~laser_topic", "laser")
+        segmentationTopic = rospy.get_param("~segmentation_topic", "laser_segmentation")
         ### End of configurable parameters ###
+
+        cloudTopic = segmentationTopic + "_cloud"
+        markersTopic = segmentationTopic + "_markers"
 
         self._lastMarkerCount = 0
 
-        self.cloudPublisher = rospy.Publisher(cloudTopic, PointCloud2)
-        self.markerArrayPublisher = rospy.Publisher(markersTopic, MarkerArray)
+        self.cloudPublisher = rospy.Publisher(cloudTopic, PointCloud2, queue_size=10)
+        self.markerArrayPublisher = rospy.Publisher(markersTopic, MarkerArray, queue_size=10)
 
         laserSubscriber = message_filters.Subscriber(laserscanTopic, LaserScan)
         segmentationSubscriber = message_filters.Subscriber(segmentationTopic, LaserscanSegmentation)
